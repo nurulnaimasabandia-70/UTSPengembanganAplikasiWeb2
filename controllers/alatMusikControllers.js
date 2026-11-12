@@ -9,14 +9,20 @@ exports.createAlatMusik = async (req, res) => {
       message: 'Data alat musik berhasil ditambahkan',
       data: alat
     });
-  } catch (error) {
+    } catch (error) {
+    if (error.code === 11000) {
+      return res.status(409).json({
+        success: false,
+        message: 'Kode alat musik sudah digunakan',
+        detail: error.message
+      });
+    }
+
     res.status(400).json({
       success: false,
       message: error.message
     });
   }
-};
-
 exports.getAllAlatMusik = async (req, res) => {
   try {
     const filter = {};
