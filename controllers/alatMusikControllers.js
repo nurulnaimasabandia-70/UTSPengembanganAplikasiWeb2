@@ -31,8 +31,14 @@ exports.getAllAlatMusik = async (req, res) => {
       .populate('ruangId');
 
     if (req.query.sort) {
-  query = query.sort({ [req.query.sort]: 1 });
-  }
+  const sortField = req.query.sort.startsWith('-')
+    ? req.query.sort.substring(1)
+    : req.query.sort;
+
+  const sortOrder = req.query.sort.startsWith('-') ? -1 : 1;
+
+  query = query.sort({ [sortField]: sortOrder });
+}
 
     if (fields) {
       query = query.select(fields.split(',').join(' '));
